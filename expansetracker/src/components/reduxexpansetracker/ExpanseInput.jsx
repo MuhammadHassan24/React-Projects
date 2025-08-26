@@ -1,9 +1,15 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { addTransaction } from '../../redux/reducer'
 
 function ExpanseInput() {
 
+    const dispatch = useDispatch();
     const [description, setDescription] = useState("")
+    const [transactionType, setTransactionType] = useState('income');
     const [amount, setAmount] = useState('')
+
+
 
     const handleTransaction = (e) => {
         e.preventDefault();
@@ -12,15 +18,20 @@ function ExpanseInput() {
             alert("Please fill all fields before adding a transaction.");
             return;
         }
+        const numericAmount = transactionType === 'expense'
+            ? -Math.abs(Number(amount))
+            : Math.abs(Number(amount));
         const newTransaction = {
             id: Date.now(),
             date: new Date().toLocaleDateString(),
             description,
-            amount: Number(amount)
+            amount: Number(numericAmount)
         }
+        dispatch(addTransaction(newTransaction));
         setDescription("");
         setAmount("");
     }
+
 
 
 
@@ -42,6 +53,28 @@ function ExpanseInput() {
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder='Enter amount'
                     className='h-10 px-3 border rounded' />
+            </div>
+            <div className='flex gap-4'>
+                <label className='flex items-center'>
+                    <input
+                        type="radio"
+                        value="income"
+                        checked={transactionType === 'income'}
+                        onChange={() => setTransactionType('income')}
+                        className='mr-2'
+                    />
+                    Income
+                </label>
+                <label className='flex items-center'>
+                    <input
+                        type="radio"
+                        value="expense"
+                        checked={transactionType === 'expense'}
+                        onChange={() => setTransactionType('expense')}
+                        className='mr-2'
+                    />
+                    Expense
+                </label>
             </div>
             <button type='submit'
                 onClick={handleTransaction}

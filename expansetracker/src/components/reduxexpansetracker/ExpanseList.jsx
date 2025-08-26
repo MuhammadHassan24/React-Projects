@@ -1,11 +1,19 @@
 import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { deleteTransaction } from '../../redux/reducer'
 
 function ExpanseHistory() {
 
+    const { expanses } = useSelector(state => state.expanseReducser);
+    const dispatch = useDispatch();
+
+    const handleDelete = (id) => {
+        dispatch(deleteTransaction(id));
+    }
 
     return (
         <>
-            {transactions.length > 0 &&
+            {expanses.length > 0 &&
                 <div className="overflow-auto rounded-md w-full mt-5">
                     <table className=" bg-white border border-gray-200 rounded-lg w-full">
                         <thead>
@@ -17,7 +25,7 @@ function ExpanseHistory() {
                             </tr>
                         </thead>
                         <tbody>
-                            {transactions.map((tx, index) => (
+                            {expanses.map((tx, index) => (
                                 <tr key={index} className="border-t text-gray-700">
                                     <td className="py-3 px-4">{tx.date}</td>
                                     <td className="py-3 px-4">{tx.description}</td>
@@ -26,7 +34,7 @@ function ExpanseHistory() {
                                     </td>
                                     <td className="py-3 px-4">
                                         <button
-                                            onClick={() => handleDelete(index)}
+                                            onClick={() => handleDelete(tx.id)}
                                             className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">
                                             X
                                         </button>

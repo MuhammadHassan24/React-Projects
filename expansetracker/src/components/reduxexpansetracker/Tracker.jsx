@@ -11,7 +11,7 @@ function Tracker() {
                 <ExpanseBalance />
                 <IncomeExpanse />
                 <ExpanseInput />
-                {/* <ExpanseHistory /> */}
+                <ExpanseHistory />
             </div>
         </div>
     )
